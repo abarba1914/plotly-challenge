@@ -1,6 +1,6 @@
-// create the function to get the necessary data
+// function to get data
 function getInfo(id) {
-    // read the json file to get data
+    // read the json file
     d3.json("samples.json").then((data)=> {
         
         // get the info for the demographic panel
@@ -8,7 +8,7 @@ function getInfo(id) {
 
         console.log(metadata)
 
-        // filter data info by id
+        // filter by id
         var result = metadata.filter(meta => meta.id.toString() === id)[0];
 
         // select demographic panel to put data
@@ -17,18 +17,13 @@ function getInfo(id) {
         // empty the demo panel
         demographicInfo.html("");
 
-        // grab the necessary demographic data data for the id and append
+        // grab the demographic data for the id and append
         Object.entries(result).forEach((key) => {   
                 demographicInfo.append("h5").text(key[0].toUpperCase() + ": " + key[1] + "\n");    
         });
     });
 }
 
-// create the function for the change event
-function optionChanged(id) {
-    getPlot(id);
-    getInfo(id);
-}
 
 // Creating function for plots
 function getPlot(id) {
@@ -46,10 +41,10 @@ function getPlot(id) {
         var samplevalues = samples.sample_values.slice(0, 10).reverse();
   
         // get only top 10 otu ids for the plot OTU and reversing it. 
-        var OTU_top = (samples.otu_ids.slice(0, 10)).reverse();
+        var OTU_TOP = (samples.otu_ids.slice(0, 10)).reverse();
         
         // get the otu id's to the desired form for the plot
-        var OTU_id = OTU_top.map(d => "OTU " + d)
+        var OTU_ID = OTU_TOP.map(d => "OTU " + d)
     
   
         // get the top 10 labels for the plot
@@ -59,7 +54,7 @@ function getPlot(id) {
         // create trace
         var trace = {
             x: samplevalues,
-            y: OTU_id,
+            y: OTU_ID,
             text: labels,
             marker: {
               color: 'rgb(255,0,153)'},
@@ -117,6 +112,11 @@ function getPlot(id) {
       });
   }  
 
+  // create the function for change event
+function optionChanged(id) {
+    getPlot(id);
+    getInfo(id);
+}
 
 // Initializes the page with a default plot
 function init() {
@@ -132,7 +132,7 @@ function init() {
             dropdown.append("option").text(name).property("value");
         });
 
-        // call the functions to display the data and the plots to the page
+        // call functions to display the data and the plots
         getPlot(data.names[0]);
         getInfo(data.names[0]);
     });
